@@ -280,9 +280,8 @@
 
 
 import { useState, useEffect } from "react";
-import { createAsset } from "./assetAPI.js";
 
-export default function AssetRegistration() {
+export default function AssetRegistration({ onAdd }) {
   const [form, setForm] = useState({
     type: "",
     name: "",
@@ -323,7 +322,6 @@ export default function AssetRegistration() {
   /* ---------------- VALIDATION ---------------- */
   const validate = () => {
     const e = {};
-
     if (!form.type) e.type = "Asset type is required";
     if (!form.name.trim()) e.name = "Asset name is required";
     if (!form.location.trim()) e.location = "Location is required";
@@ -338,13 +336,13 @@ export default function AssetRegistration() {
 
     const payload = {
       name: form.name.trim(),
-      type: form.type,      // enum string
+      type: form.type,       // RIG / PIPELINE / STORAGE
       location: form.location.trim()
     };
 
     try {
       setSubmitting(true);
-      await createAsset(payload);
+      await onAdd(payload); // 🔥 PARENT HANDLES API + REFRESH
       alert("Asset registered successfully");
 
       setForm({ type: "", name: "", location: "" });
@@ -358,7 +356,6 @@ export default function AssetRegistration() {
     }
   };
 
-  /* ---------------- UI HELPERS ---------------- */
   const inputClass = (field) =>
     `w-full px-4 py-2 rounded-lg border text-sm
      focus:ring-2 focus:ring-slate-500 focus:outline-none

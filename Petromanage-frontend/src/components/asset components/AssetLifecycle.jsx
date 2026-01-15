@@ -185,6 +185,7 @@
 //   );
 // }
 // components/asset components/AssetLifecycle.jsx
+// components/asset components/AssetLifecycle.jsx
 import { useState } from "react";
 import {
   CheckCircle,
@@ -194,27 +195,26 @@ import {
   ChevronUp
 } from "lucide-react";
 
-/* UI lifecycle (frontend concept) */
+/* Backend lifecycle order (SOURCE OF TRUTH) */
 const STATUS_ORDER = [
-  "Registered",
-  "Operational",
-  "Maintenance",
-  "Under Inspection",
-  "Decommissioned"
+  "REGISTERED",
+  "OPERATIONAL",
+  "MAINTENANCE",
+  "UNDER_INSPECTION",
+  "DECOMMISSIONED"
 ];
 
-/* Backend → UI mapping */
-const mapBackendStatus = (status) => {
-  switch (status) {
-    case "ACTIVE":
-      return "Operational";
-    default:
-      return "Registered";
-  }
+/* Pretty labels for UI */
+const STATUS_LABEL = {
+  REGISTERED: "Registered",
+  OPERATIONAL: "Operational",
+  MAINTENANCE: "Maintenance",
+  UNDER_INSPECTION: "Under Inspection",
+  DECOMMISSIONED: "Decommissioned"
 };
 
 export default function AssetLifecycle({ assets = [] }) {
-  if (!Array.isArray(assets) || assets.length === 0) {
+  if (!assets.length) {
     return (
       <div className="text-center py-20 text-gray-400">
         <Activity className="mx-auto w-10 h-10 mb-3 opacity-50" />
@@ -237,9 +237,7 @@ export default function AssetLifecycle({ assets = [] }) {
 function LifecycleCard({ asset }) {
   const [open, setOpen] = useState(true);
 
-  const uiStatus = mapBackendStatus(asset.status);
-  const currentIndex = STATUS_ORDER.indexOf(uiStatus);
-
+  const currentIndex = STATUS_ORDER.indexOf(asset.status);
   const progress = Math.round(
     ((currentIndex + 1) / STATUS_ORDER.length) * 100
   );
@@ -259,8 +257,21 @@ function LifecycleCard({ asset }) {
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="text-xs px-3 py-1 rounded-full font-medium bg-green-100 text-green-700">
-            {uiStatus}
+          <span
+            className={`text-xs px-3 py-1 rounded-full font-medium
+              ${
+                asset.status === "OPERATIONAL"
+                  ? "bg-green-100 text-green-700"
+                  : asset.status === "MAINTENANCE"
+                  ? "bg-amber-100 text-amber-700"
+                  : asset.status === "UNDER_INSPECTION"
+                  ? "bg-blue-100 text-blue-700"
+                  : asset.status === "DECOMMISSIONED"
+                  ? "bg-red-100 text-red-700"
+                  : "bg-gray-100 text-gray-600"
+              }`}
+          >
+            {STATUS_LABEL[asset.status]}
           </span>
 
           <button
@@ -332,7 +343,7 @@ function LifecycleCard({ asset }) {
                             : "text-gray-400"
                         }`}
                     >
-                      {status}
+                      {STATUS_LABEL[status]}
                     </span>
                   </div>
 

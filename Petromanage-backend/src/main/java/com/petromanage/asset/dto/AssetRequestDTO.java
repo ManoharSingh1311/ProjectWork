@@ -1,5 +1,6 @@
 package com.petromanage.asset.dto;
 
+import com.petromanage.asset.enums.AssetStatus;
 import com.petromanage.asset.enums.AssetType;
 
 import jakarta.validation.constraints.NotBlank;
@@ -18,4 +19,7 @@ public class AssetRequestDTO {
     private AssetType type;
 
     private String location;
+
+    // 🔥 ADD THIS (LIFECYCLE STATUS)
+    private AssetStatus status;
 }

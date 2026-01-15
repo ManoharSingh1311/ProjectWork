@@ -14,9 +14,12 @@ export const createAsset = async (asset) => {
   return response.data;
 };
 
-// Update asset
-export const updateAsset = async (id, asset) => {
-  const response = await axios.put(`${BASE_URL}/${id}`, asset);
+// ✅ Update asset (FIXED)
+export const updateAsset = async (asset) => {
+  const response = await axios.put(
+    `${BASE_URL}/${asset.assetId}`,
+    asset
+  );
   return response.data;
 };
 

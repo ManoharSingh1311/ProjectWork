@@ -9,5 +9,4 @@ public class PetromanageBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PetromanageBackendApplication.class, args);
 	}
-
 }

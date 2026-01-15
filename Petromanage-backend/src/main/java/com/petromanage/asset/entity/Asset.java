@@ -44,7 +44,7 @@ public class Asset {
     void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        status = AssetStatus.ACTIVE;
+        status = AssetStatus.REGISTERED;
     }
 
     @PreUpdate

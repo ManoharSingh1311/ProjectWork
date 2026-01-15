@@ -1,8 +1,9 @@
 package com.petromanage.asset.enums;
 
 public enum AssetStatus {
-    ACTIVE,
-    INACTIVE,
-    UNDER_MAINTENANCE,
+    REGISTERED,
+    OPERATIONAL,
+    MAINTENANCE,
+    UNDER_INSPECTION,
     DECOMMISSIONED
 }
